@@ -13,10 +13,10 @@ pipeline {
       steps {
         // Récupère le contenu du dépôt Git
         checkout scm
-                
+        
         // Affiche les fichiers récupérés pour vérification
         sh 'ls -la'
-                
+        
         // Vérifie que le fichier index.html existe bien
         sh 'test -f index.html && echo "index.html trouvé" || echo "ATTENTION: index.html non trouvé"'
       }
@@ -27,6 +27,7 @@ pipeline {
           // Copie le fichier index.html vers la destination
           sh "cp index.html ${DESTINATION_PATH}"
           echo "Le fichier index.html a été copié vers ${DESTINATION_PATH}"
+        }
       }
     }
     stage('Restart Apache2') {
