@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenue sur mon site Docker !!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenue sur mon site web3 déployé avec Jenkins !</h1>
+    <p>Ce fichier HTML a été copié automatiquement par Jenkins dans /var/www/html.</p>
+    <p>Date de déploiement : <strong><span id="deployDate"></span></strong></p>
 
+
+
+    <script>
+        document.getElementById("deployDate").textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>
