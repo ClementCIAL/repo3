@@ -1,11 +1,9 @@
 pipeline {
   agent { 
-    label 'agent-vm' 
+    label 'agent-vm'
   }
 
   environment {
-    NOM_IMAGE = 'mon-image'
-    NOM_CONTENEUR = 'mon-conteneur'
     // Chemin de destination sur la machine de l'agent
     DESTINATION_PATH = '/var/www/html/'
   }
@@ -36,18 +34,6 @@ pipeline {
         script {
           echo "Redémarrage du service Apache2..."
           sh "sudo systemctl restart apache2"
-          
-          // Vérification que Apache2 s'est bien redémarré
-          def apacheStatus = sh(
-            script: "sudo systemctl is-active apache2",
-            returnStatus: true
-          )
-                    
-          if (apacheStatus == 0) {
-            echo "Apache2 a été redémarré avec succès et est actif."
-          } else {
-            error "Échec du redémarrage d'Apache2. Vérifiez les journaux système."
-          }
         }
       }
     }  
