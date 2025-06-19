@@ -25,7 +25,7 @@ pipeline {
       steps{
         script {
           // Copie le fichier index.html vers la destination
-          sh "cp index.html ${DESTINATION_PATH}"
+          sudo sh "cp index.html ${DESTINATION_PATH}"
           echo "Le fichier index.html a été copié vers ${DESTINATION_PATH}"
         }
       }
