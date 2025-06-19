@@ -9,23 +9,21 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {
+    stage('Verifier et installer apache2') {
       steps {
-        // Récupère le contenu du dépôt Git
-        checkout scm
-        
-        // Affiche les fichiers récupérés pour vérification
-        sh 'ls -la'
-        
-        // Vérifie que le fichier index.html existe bien
-        sh 'test -f index.html && echo "index.html trouvé" || echo "ATTENTION: index.html non trouvé"'
+        sh '''
+          if [ ! -f /usr/sbin/apache2 ]; then
+            sudo apt update
+            sudo apt install -y apache2
+          fi
+        '''
       }
     }
     stage('Copie index.html'){
       steps{
         script {
           // Copie le fichier index.html vers la destination
-          sudo sh "cp index.html ${DESTINATION_PATH}"
+          sh "sudo cp index.html ${DESTINATION_PATH}"
           echo "Le fichier index.html a été copié vers ${DESTINATION_PATH}"
         }
       }
@@ -39,4 +37,12 @@ pipeline {
       }
     }  
   }
+  post {
+        success {
+            echo 'Déploiement HTML effectué et Apache redémarré.'
+        }
+        failure {
+            echo 'Une erreur est survenue pendant le déploiement.'
+        }
+    }
 }
