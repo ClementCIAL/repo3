@@ -38,11 +38,11 @@ pipeline {
     }  
   }
   post {
-        success {
-            echo 'Déploiement HTML effectué et Apache redémarré.'
-        }
-        failure {
-            echo 'Une erreur est survenue pendant le déploiement.'
-        }
+    success {
+      echo 'Déploiement HTML effectué et Apache redémarré.'
     }
+    failure {
+      echo 'Une erreur est survenue pendant le déploiement.'
+    }
+  }
 }
