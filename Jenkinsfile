@@ -1,48 +1,39 @@
 pipeline {
-  agent { 
-    label 'agent-vm'
-  }
-
-  environment {
-    // Chemin de destination sur la machine de l'agent
-    DESTINATION_PATH = '/var/www/html/'
-  }
-
-  stages {
-    stage('Verifier et installer apache2') {
-      steps {
-        sh '''
-          if [ ! -f /usr/sbin/apache2 ]; then
-            sudo apt update
-            sudo apt install -y apache2
-          fi
-        '''
-      }
+    agent {
+        label 'agent-vm'
     }
-    stage('Copie index.html'){
-      steps{
-        script {
-          // Copie le fichier index.html vers la destination
-          sh "sudo cp index.html ${DESTINATION_PATH}"
-          echo "Le fichier index.html a été copié vers ${DESTINATION_PATH}"
+    
+    stages {
+        stage('Verifier et installer apache2') {
+            steps {
+                sh '''
+                    if [ ! -f /usr/sbin/apache2 ]; then
+                        sudo apt update
+                        sudo apt install -y apache2
+                    fi
+                '''
+            }
         }
-      }
-    }
-    stage('Restart Apache2') {
-      steps {
-        script {
-          echo "Redémarrage du service Apache2..."
-          sh "sudo systemctl restart apache2"
+        
+        stage('Copier index.html') {
+            steps {
+                sh 'sudo cp index.html /var/www/html/index.html'
+            }
         }
-      }
-    }  
-  }
-  post {
-    success {
-      echo 'Déploiement HTML effectué et Apache redémarré.'
+        
+        stage('Redémarrer Apache2') {
+            steps {
+                sh 'sudo systemctl restart apache2'
+            }
+        }
     }
-    failure {
-      echo 'Une erreur est survenue pendant le déploiement.'
+    
+    post {
+        success {
+            echo 'Déploiement HTML effectué et Apache redémarré.'
+        }
+        failure {
+            echo 'Une erreur est survenue pendant le déploiement.'
+        }
     }
-  }
 }
